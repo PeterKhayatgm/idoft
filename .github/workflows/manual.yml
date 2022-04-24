@@ -1,0 +1,28 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  greet:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: test
+      run: git clone https://github.com/PeterKhayatgm/flink
+    - name: Compile code
+      working-directory: flink
+      run: mvn test-compile -pl flink-libraries/flink-cep -am
+    - name: running regular test
+      working-directory: flink
+      run:  mvn -pl flink-libraries/flink-cep test -Dtest=org.apache.flink.cep.operator.CEPOperatorTest#testCEPOperatorComparatorEventTime
+    - name: Running test using NonDex Tool
+      working-directory: flink
+      run: mvn -pl flink-libraries/flink-cep edu.illinois:nondex-maven-plugin:1.1.2:nondex -Dtest=org.apache.flink.cep.operator.CEPOperatorTest#testCEPOperatorComparatorEventTime
