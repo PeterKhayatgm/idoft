@@ -18,12 +18,12 @@ jobs:
     - uses: actions/setup-java@v1
       with:
        java-version: '8'
-    - name: test
+    - name: Cloning repository of Flink
       run: git clone https://github.com/PeterKhayatgm/flink
-    - name: Compile code
+    - name: Compiling code
       working-directory: flink
       run: mvn test-compile -pl flink-libraries/flink-cep -am
-    - name: running regular test
+    - name: Running the regular tests (without NonDex)
       working-directory: flink
       run:  mvn -pl flink-libraries/flink-cep test -Dtest=org.apache.flink.cep.operator.CEPOperatorTest#testCEPOperatorComparatorEventTime
     - name: Running test using NonDex Tool
